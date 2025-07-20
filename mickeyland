@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Скретч-карта от Скрутча МакДака</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+        }
+
+        .scratch-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+        }
+
+        .scratch-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo-container {
+            margin-bottom: 30px;
+        }
+
+        .scrooge-logo {
+            width: 120px;
+            height: 120px;
+            background: #FFD700;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            font-weight: bold;
+            color: #1e3c72;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .scrooge-logo::before {
+            content: "🦆";
+            font-size: 50px;
+        }
+
+        .company-name {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tagline {
+            font-size: 16px;
+            color: #a0c4ff;
+            margin-bottom: 30px;
+        }
+
+        .scratch-card {
+            width: 300px;
+            height: 200px;
+            position: relative;
+            margin: 0 auto 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            border: 3px solid #FFD700;
+        }
+
+        .prize-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #00ff87 0%, #60efff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: #1e3c72;
+            font-weight: bold;
+        }
+
+        .prize-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .prize-text {
+            font-size: 18px;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .scratch-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #4a5568, #2d3748);
+            cursor: crosshair;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .scratch-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+            opacity: 0.8;
+        }
+
+        .scratch-text {
+            color: #a0aec0;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .instructions {
+            color: #a0c4ff;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .tech-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            cursor: crosshair;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #FFD700;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        @media (max-width: 768px) {
+            .scratch-container {
+                padding: 30px 20px;
+            }
+            
+            .scratch-card {
+                width: 280px;
+                height: 180px;
+            }
+            
+            .company-name {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="scratch-section">
+        <div class="tech-pattern"></div>
+        <div class="scratch-container">
+            <div class="logo-container">
+                <div class="scrooge-logo"></div>
+                <h1 class="company-name">СКРУТЧ МАКДАК</h1>
+                <p class="tagline">Передовые IT-решения и инновационные технологии</p>
+            </div>
+            
+            <div class="scratch-card" id="scratchCard">
+                <div class="prize-layer">
+                    <div class="prize-icon">💎</div>
+                    <div class="prize-text">Эксклюзивная консультация по внедрению AI-решений!</div>
+                </div>
+                <div class="scratch-layer" id="scratchLayer">
+                    <div class="scratch-icon">💻</div>
+                    <div class="scratch-text">ПОЦАРАПАЙ<br>ДЛЯ ПОЛУЧЕНИЯ<br>IT-ПРИЗА!</div>
+                </div>
+                <canvas id="scratchCanvas" width="300" height="200"></canvas>
+            </div>
+            
+            <p class="instructions">Поцарапайте карту мышкой или пальцем, чтобы получить ваш технологический приз!</p>
+        </div>
+    </section>
+
+    <script>
+        const canvas = document.getElementById('scratchCanvas');
+        const ctx = canvas.getContext('2d');
+        const scratchLayer = document.getElementById('scratchLayer');
+        let isScratching = false;
+        let hasScratched = false;
+
+        // Инициализация canvas
+        ctx.fillStyle = 'rgba(74, 85, 104, 1)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Функция для создания конфетти
+        function createConfetti() {
+            const colors = ['#FFD700', '#00ff87', '#60efff', '#ff6b6b', '#4ecdc4'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * window.innerWidth + 'px';
+                confetti.style.top = '-10px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.transform = 'rotate(' + Math.random() * 360 + 'deg)';
+                
+                document.body.appendChild(confetti);
+                
+                const animation = confetti.animate([
+                    { transform: 'translateY(-10px) rotate(0deg)', opacity: 1 },
+                    { transform: `translateY(${window.innerHeight + 20}px) rotate(720deg)`, opacity: 0 }
+                ], {
+                    duration: Math.random() * 2000 + 1000,
+                    easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                });
+                
+                animation.addEventListener('finish', () => {
+                    document.body.removeChild(confetti);
+                });
+            }
+        }
+
+        function scratch(e) {
+            if (!isScratching) return;
+            
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left;
+            const y = (e.clientY || e.touches[0].clientY) - rect.top;
+            
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            ctx.arc(x, y, 20, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            if (!hasScratched) {
+                hasScratched = true;
+                setTimeout(() => {
+                    createConfetti();
+                }, 500);
+            }
+        }
+
+        // События мыши
+        canvas.addEventListener('mousedown', (e) => {
+            isScratching = true;
+            scratch(e);
+        });
+
+        canvas.addEventListener('mousemove', scratch);
+
+        canvas.addEventListener('mouseup', () => {
+            isScratching = false;
+        });
+
+        // События касания
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            isScratching = true;
+            scratch(e);
+        });
+
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            scratch(e);
+        });
+
+        canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            isScratching = false;
+        });
+
+        // Адаптивность canvas
+        function resizeCanvas() {
+            const card = document.getElementById('scratchCard');
+            const rect = card.getBoundingClientRect();
+            canvas.width = rect.width - 6; // учитываем border
+            canvas.height = rect.height - 6;
+            
+            // Перерисовываем серый слой
+            ctx.fillStyle = 'rgba(74, 85, 104, 1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+    </script>
+</body>
+</html>
